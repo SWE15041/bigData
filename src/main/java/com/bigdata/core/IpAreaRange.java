@@ -1,25 +1,40 @@
 package com.bigdata.core;
 
+import com.bigdata.util.datxip.City;
+
 import java.io.*;
-import com.bigdata.util.ip.IpHelper;
-import java.util.HashMap;
-import java.util.TreeMap;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class IpAreaRange {
 
     private String ipRangeFileName;
     private SizeBalancedTree ipRangeTree_S;
     private SizeBalancedTree ipRangeTree_T;
-    private HashMap<String,Integer> map;
-    private TreeMap<String,Integer> countOfRegion;
+    private Map<String,Integer> map;
+    private Map<String,Integer> countOfRegion;
+    private City city;
+
 
     public IpAreaRange() {
         //this.ipRangeFileName = "" ;
         //this.ipRangeTree_S = new SizeBalancedTree();
         //this.ipRangeTree_T = new SizeBalancedTree();
-        map = new HashMap<String, Integer>();
-        ValueComparator bvc =  new ValueComparator(map);
-        countOfRegion = new TreeMap<String,Integer>(bvc);
+        //map = new HashMap<String, Integer>();
+        //map = Collections.synchronizedMap(new HashMap<String, Integer>());
+        try{
+            this.map = new ConcurrentHashMap<String, Integer>();
+            ValueComparator bvc =  new ValueComparator(map);
+            //countOfRegion = new TreeMap<String,Integer>(bvc);
+            this.countOfRegion = Collections.synchronizedMap(new TreeMap<String, Integer>(bvc));
+            this.city = new City(FilePath.ipFile);
+        }
+        catch (Exception ioex){
+            ioex.printStackTrace();
+        }
+
+
+
     }
 
     public IpAreaRange(String fileName) {
@@ -32,8 +47,6 @@ public class IpAreaRange {
     /**
      * 建立IP段SBT
      *
-     * @param ipRangeTree_S
-     * @param ipRangeTree_T
      */
     public void build() {
         try {
@@ -64,19 +77,19 @@ public class IpAreaRange {
     }
 
     /**
-     * 传入IP地址，搜索IpHelper的结果，返回省份信息
+     * 传入IP地址，搜索IP数据库的结果，返回省份信息
      *
-     * @param checkIp
+     * @param checkIp String
      * @return ans
      */
     public String search(String checkIp) {
         String region = "null";
         try {
-            region = IpHelper.findRegionByIp(checkIp);
+            region = Arrays.toString(this.city.find(checkIp));
             insertRegion(region);
         }
         catch (Exception e) {
-            System.out.println("Err " + e);
+            System.out.println("Err " + e + " " + checkIp);
         }
         return region;
     }
@@ -91,7 +104,7 @@ public class IpAreaRange {
         }
     }
 
-    public TreeMap<String, Integer> getRegionCount() {
+    public Map<String, Integer> getRegionCount() {
         countOfRegion.putAll(map);
         return this.countOfRegion;
     }

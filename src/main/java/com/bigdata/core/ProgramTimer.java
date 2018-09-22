@@ -33,7 +33,7 @@ public class ProgramTimer {
     /**
      * 对标准时的转换
      *
-     * @param ms
+     * @param ms Long
      * @return 程序总用时:X天X小时X分X秒X毫秒
      */
     public static String formatTime(Long ms) {

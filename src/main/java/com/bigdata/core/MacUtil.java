@@ -8,7 +8,7 @@ public class MacUtil {
      * MAC地址转换为Long型
      *
      * @param strMac
-     * @return
+     * @return Long
      */
     public static long macToLong(String strMac) {
         long[] mac = new long[6];
@@ -35,7 +35,7 @@ public class MacUtil {
      * Long型转换为MAC地址(不补0)
      *
      * @param longMac
-     * @return
+     * @return String
      */
     public static String longToMac(long longMac) {
         StringBuffer sb = new StringBuffer("");

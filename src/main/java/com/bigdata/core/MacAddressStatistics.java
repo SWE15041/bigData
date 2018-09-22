@@ -1,19 +1,22 @@
 package com.bigdata.core;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MacAddressStatistics {
 
     private SizeBalancedTree macAddressTree;
-    private HashMap<String,Integer> map;
-    private TreeMap<String,Integer> countOfMac;
+    private Map<String,Integer> map;
+    private Map<String,Integer> countOfMac;
 
     public MacAddressStatistics () {
-        this.map = new HashMap<String, Integer>();
+        //this.map = Collections.synchronizedMap(new HashMap<String, Integer>());
+        this.map = new ConcurrentHashMap<String, Integer>();
         ValueComparator bvc = new ValueComparator(map);
-        this.countOfMac = new TreeMap<String, Integer>(bvc);
+        this.countOfMac = Collections.synchronizedMap(new TreeMap<String, Integer>(bvc));
         //this.macAddressTree = new SizeBalancedTree<NodeOfMac>();
     }
 
@@ -45,7 +48,7 @@ public class MacAddressStatistics {
     /**
      * 遍历SBT，返回结果
      */
-    public TreeMap<String,Integer> getAnswer () {
+    public Map<String,Integer> getAnswer () {
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
                         //Map.entry<Integer,String> 映射项（键-值对）  有几个方法：用上面的名字entry
                         //entry.getKey() ;entry.getValue(); entry.setValue();
