@@ -15,9 +15,9 @@ import java.util.Map;
 public class IpHelper {
     private static IpTree ipTree = IpTree.getInstance();
 
-    private static final String ipFile = "data/ipDatabase.csv";
+    private static final String ipFile = "src/main/webapp/data/ipDatabase.csv";
 
-    private static final String regionFile = "data/ipRegion.xlsx";
+    private static final String regionFile = "src/main/webapp/data/ipRegion.xlsx";
 
     static{
         buildTrain();

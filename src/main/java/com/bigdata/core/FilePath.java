@@ -14,5 +14,9 @@ public class FilePath {
      *
      * @param ipFile String
      */
-    public static String ipFile = "/src/main/resources/data/ipDatabase.datx";
+//    public static String ipFile = "classpath:data/ipDatabase.datx";
+        public static String ipFile = "E:\\大数据分析\\github\\bigData\\src\\main\\webapp\\data\\ipDatabase.datx";
+
 }
+
+

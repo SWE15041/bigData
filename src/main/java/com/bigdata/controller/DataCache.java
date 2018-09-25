@@ -12,7 +12,6 @@ public class DataCache {
 
     //私有构造函数
     private DataCache() {
-
     }
 
 
